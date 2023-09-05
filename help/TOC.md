@@ -1,19 +1,19 @@
 ---
-user-guide-title: 行銷人員體驗
-breadcrumb-title: 行銷人員體驗
-user-guide-description: 行銷人員體驗使用手冊。
+user-guide-title: Marketer Experience
+breadcrumb-title: Marketer Experience
+user-guide-description: Marketer Experience 使用者指南。
 source-git-commit: a3eef4938f645e4db1db335aa36d988c93921f18
-workflow-type: tm+mt
+workflow-type: ht
 source-wordcount: '21'
-ht-degree: 9%
+ht-degree: 100%
 
 ---
 
 
-# 行銷人員體驗 {#using}
+# Marketer Experience {#using}
 
-+ [行銷人員體驗首頁](home.md)
-+ 放大 {#amplify}
++ [Marketer Experience 首頁](home.md)
++ Amplify {#amplify}
    + [概覽](amplify/overview.md)
 + 使用案例教戰手冊 {#use-case-playbooks}
    + [概覽](use-case-playbooks/overview.md)
