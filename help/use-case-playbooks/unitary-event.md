@@ -3,9 +3,9 @@ title: 單一事件
 description: 這是模擬「[!UICONTROL 單一事件]」類型歷程驗證的指令頁面。
 exl-id: 314f967c-e10f-4832-bdba-901424dc2eeb
 source-git-commit: 194667c26ed002be166ab91cc778594dc1f09238
-workflow-type: tm+mt
+workflow-type: ht
 source-wordcount: '889'
-ht-degree: 37%
+ht-degree: 100%
 
 ---
 
@@ -33,10 +33,10 @@ ht-degree: 37%
 
 >[!TIP]
 >
->如果您使用終端機來執行CURL，您可以在執行CURL之前設定變數值，因此不需要在個別CURL中取代這些值。
->例如：如果您設定 `ORG_ID=************@AdobeOrg`，殼層會自動取代 `$ORG_ID` ，您便可以複製、貼上及執行下方的CURL，而無需進行任何修改。
+>如果您使用終端機執行 curl，則可以在執行 curl 之前設定變數值，這樣就無需在各個 curl 中替換這些值。
+>例如：如果您設定 `ORG_ID=************@AdobeOrg`，shell 會自動將每次出現的 `$ORG_ID` 替換成該值，這樣您就可以複製、貼上和執行以下 curl 而不用做任何修改。
 >
-> 本檔案會使用下列變數
+> 本文件中使用了以下變數
 >
 > ACCESS_TOKEN
 >
@@ -44,11 +44,11 @@ ht-degree: 37%
 >
 > ORG_ID
 >
-> sandbox_NAME
+> SANDBOX_NAME
 >
 > PROFILE_SCHEMA_REF
 >
-> 設定檔資料集名稱
+> PROFILE_DATASET_NAME
 >
 > PROFILE_DATASET_ID
 >
@@ -64,15 +64,15 @@ ht-degree: 37%
 >
 > CUSTOMER_MOBILE_NUMBER
 >
-> CUSTOMER_FIRSTNAME
+> CUSTOMER_FIRST_NAME
 >
 > CUSTOMER_LAST_NAME
 >
-> 電子郵件
+> EMAIL
 >
 > EVENT_SCHEMA_REF
 >
-> event_DATASET_NAME
+> EVENT_DATASET_NAME
 >
 > EVENT_DATASET_ID
 >
@@ -84,13 +84,13 @@ ht-degree: 37%
 >
 > EVENT_INLET_URL
 >
-> 時間戳記
+> TIMESTAMP
 >
 > UNIQUE_EVENT_ID
 
-## 擷取 IMS 語彙基元
+## 擷取 IMS 權杖
 
-1. 請依照[驗證和存取 Experience Platform API](https://experienceleague.adobe.com/docs/experience-platform/landing/platform-apis/api-authentication.html) 文件來生成存取權語彙基元。
+1. 請依照[驗證和存取 Experience Platform API](https://experienceleague.adobe.com/docs/experience-platform/landing/platform-apis/api-authentication.html) 文件來產生存取權杖。
 
 ## 發佈教戰手冊建立的歷程
 
@@ -100,9 +100,9 @@ ht-degree: 37%
 
    ![歷程對象](../assets/journey-object.png)
 
-1. **使用cURL**
+1. **使用 cURL**
 
-   1. 發佈歷程。 回應將包含下一步擷取歷程發佈狀態所需的工作ID。
+   1. 發佈歷程。回應將包含在下一步驟中擷取歷程發佈狀態所需的作業 ID。
 
       ```bash
       curl --location --request POST "https://journey-private.adobe.io/authoring/jobs/journeyVersions/$JOURNEY_ID/deploy" \
@@ -114,7 +114,7 @@ ht-degree: 37%
       --header "Content-Type: application/json" 
       ```
 
-   1. 歷程發佈可能需要一些時間，所以為了檢查狀態，請在cURL下方執行，直到 `response.status` 是 `SUCCESS`，如果歷程發佈需要時間，請務必等待10至15秒。
+   1. 歷程發佈可能需要一些時間，因此若為了檢查狀態，請執行以下 cURL，直到 `response.status` 是 `SUCCESS` 為止；如果歷程發佈需要時間，請確保等待 10-15 秒。
 
       ```bash
       curl --location "https://journey-private.adobe.io/authoring/jobs/$JOB_ID" \
@@ -125,17 +125,17 @@ ht-degree: 37%
       --header "Content-Type: application/json"
       ```
 
-## 擷取客戶個人資料
+## 擷取客戶設定檔
 
 >[!TIP]
 >
->如果您的電子郵件提供者支援加電子郵件，您可以透過附加來重複使用相同的電子郵件地址 `+<variable>` 放入您的電子郵件中，例如 `usertest@email.com` 可恢復為 `usertest+v1@email.com` 或 `usertest+24jul@email.com`. 這樣可在每次有新的個人資料時，仍然使用相同的電子郵件 ID。
+>如果您的電子郵件提供者支援 Plus 電子郵件，您可以將 `+<variable>` 附加到電子郵件，藉此重複使用相同的電子郵件地址，例如 `usertest@email.com` 可以作為 `usertest+v1@email.com` 或 `usertest+24jul@email.com` 重複使用。這樣可在每次有新的設定檔時，仍然使用相同的電子郵件 ID。
 >
->P.S： Plus電子郵件是可設定的功能，需要電子郵件提供者支援。 在測試中使用這些位址之前，請檢查您是否能在這些位址上收到電子郵件。
+>備註：Plus 電子郵件是一項可設定功能，需要電子郵件提供者支援。在測試中使用這些地址之前，請檢查您是否可以收到這些地址的電子郵件。
 
 1. 首次使用的使用者需要建立 **[!DNL customer dataset]** 和 **[!DNL HTTP Streaming Inlet Connection]**。
 1. 如果您已經建立 **[!DNL customer dataset]** 和 **[!DNL HTTP Streaming Inlet Connection]**，請跳至步驟 `5`。
-1. 執行以下cURL建立客戶設定檔資料集。
+1. 透過執行以下 cURL 建立客戶設定檔資料集。
 
    ```bash
    curl --location "https://platform.adobe.io/data/foundation/catalog/dataSet" \
@@ -166,10 +166,10 @@ ht-degree: 37%
    }'
    ```
 
-   回應的格式為 `"@/dataSets/<PROFILE_DATASET_ID>"`.
+   回應的格式為 `"@/dataSets/<PROFILE_DATASET_ID>"`。
 
-1. 建立 **[!DNL HTTP Streaming Inlet Connection]** 並透過以下步驟協助進行。
-   1. 建立基礎連線。
+1. 藉助以下步驟建立 **[!DNL HTTP Streaming Inlet Connection]**。
+   1. 建立基本連線。
 
       ```bash
       curl --location "https://platform.adobe.io/data/foundation/flowservice/connections?Cache-Control=no-cache" \
@@ -194,7 +194,7 @@ ht-degree: 37%
       }'
       ```
 
-      從回應取得基本連線ID並使用它來取代 `PROFILE_BASE_CONNECTION_ID` 在以下cURL中
+      從回應中取得基本連線 ID 並使用它取代以下 cURL 中的 `PROFILE_BASE_CONNECTION_ID`
 
    1. 建立來源連線。
 
@@ -216,7 +216,7 @@ ht-degree: 37%
       }'
       ```
 
-      從回應取得來源連線ID並使用它來取代 `PROFILE_SOURCE_CONNECTION_ID`
+      從回應中取得來源連線 ID 並使用它取代 `PROFILE_SOURCE_CONNECTION_ID`
 
    1. 建立目標連線。
 
@@ -248,7 +248,7 @@ ht-degree: 37%
       }'
       ```
 
-      從回應取得目標連線ID並使用它來取代 `PROFILE_TARGET_CONNECTION_ID`
+      從回應中取得目標連線 ID 並使用它取代 `PROFILE_TARGET_CONNECTION_ID`
 
    1. 建立資料流。
 
@@ -275,7 +275,7 @@ ht-degree: 37%
       }'
       ```
 
-   1. 取得基礎連線。 結果將包含傳送設定檔資料所需的inletUrl。
+   1. 取得基本連線。結果將包含傳送設定檔資料所需的 inletUrl。
 
       ```bash
       curl --location "https://platform.adobe.io/data/foundation/flowservice/connections/$PROFILE_BASE_CONNECTION_ID" \
@@ -286,17 +286,17 @@ ht-degree: 37%
       --header "x-api-key: $API_KEY"
       ```
 
-      從回應中取得inletUrl，並使用它來取代 `PROFILE_INLET_URL`
+      從回應中取得 inletUrl 並使用它取代 `PROFILE_INLET_URL`
 
-1. 在此步驟中，使用者必須擁有值 `PROFILE_DATASET_ID` 和 `PROFILE_INLET_URL`；如果沒有，請參考步驟 `3` 或 `4` （分別）。
-1. 若要內嵌客戶，使用者必須取代 `CUSTOMER_MOBILE_NUMBER`， `CUSTOMER_FIRST_NAME`， `CUSTOMER_LAST_NAME` 和 `EMAIL` 在以下cURL中。
+1. 在此步驟中，使用者必須具有 `PROFILE_DATASET_ID` 和 `PROFILE_INLET_URL` 的值；如果沒有，請分別參閱步驟 `3` 或 `4`。
+1. 若要擷取客戶，使用者需要替換以下 cURL 中的 `CUSTOMER_MOBILE_NUMBER`、`CUSTOMER_FIRST_NAME`、`CUSTOMER_LAST_NAME` 和 `EMAIL`。
 
    1. `CUSTOMER_MOBILE_NUMBER` 將是手機號碼，例如 `+1 000-000-0000`
    1. `CUSTOMER_FIRST_NAME` 將是使用者的名字
    1. `CUSTOMER_LAST_NAME` 將是使用者的姓氏
-   1. `EMAIL` 將是使用者的電子郵件地址，這對於使用不同的電子郵件 ID 至關重要，以便可以擷取新的個人資料。
+   1. `EMAIL` 將是使用者的電子郵件地址，這對於使用不同的電子郵件 ID 至關重要，以便可以擷取新的設定檔。
 
-1. 最後執行curl以擷取客戶設定檔。 更新 `body.xdmEntity.consents.marketing.preferred` 至 `email`， `sms`，或 `push` 根據您打算驗證的管道而定。 也設定對應的 `val` 至 `y`.
+1. 最後執行 curl 以擷取客戶設定檔。視您想要驗證的管道而定，將 `body.xdmEntity.consents.marketing.preferred` 更新為 `email`、`sms` 或 `push`。同時也將對應的 `val` 設定為 `y`。
 
    ```bash
    curl --location "$PROFILE_INLET_URL?synchronousValidation=true" \
@@ -354,11 +354,11 @@ ht-degree: 37%
    }'
    ```
 
-## 擷取歷程觸發程式事件
+## 擷取歷程觸發事件
 
 1. 首次使用的使用者需要建立 **[!DNL event dataset]** 和 **[!DNL HTTP Streaming Inlet Connection for events]**。
 1. 如果您已經建立 **[!DNL event dataset]** 和 **[!DNL HTTP Streaming Inlet Connection for events]**，請跳至步驟 `5`。
-1. 執行以下cURL建立事件資料集。
+1. 執行以下 cURL 來建立事件資料集。
 
    ```bash
    curl --location "https://platform.adobe.io/data/foundation/catalog/dataSet" \
@@ -389,11 +389,11 @@ ht-degree: 37%
    }'
    ```
 
-   回應的格式為 `"@/dataSets/<EVENT_DATASET_ID>"`
+   回應的格式為 `"@/dataSets/<EVENT_DATASET_ID>"`。
 
-1. 建立 **[!DNL HTTP Streaming Inlet Connection for events]**  並透過以下步驟協助進行。
+1. 藉助以下步驟建立 **[!DNL HTTP Streaming Inlet Connection for events]**。
    <!-- TODO: Is the name unique? If so, we may need to generate and provide in variables.txt-->
-   1. 建立基礎連線。
+   1. 建立基本連線。
 
       ```bash
       curl --location "https://platform.adobe.io/data/foundation/flowservice/connections?Cache-Control=no-cache" \
@@ -418,7 +418,7 @@ ht-degree: 37%
       }'
       ```
 
-      從回應取得基本連線ID並使用它來取代 `EVENT_BASE_CONNECTION_ID`
+      從回應中取得基本連線 ID 並使用它取代 `EVENT_BASE_CONNECTION_ID`
 
    1. 建立來源連線。
 
@@ -440,7 +440,7 @@ ht-degree: 37%
       }'
       ```
 
-      從回應取得來源連線ID並使用它來取代 `EVENT_SOURCE_CONNECTION_ID`
+      從回應中取得來源連線 ID 並使用它取代 `EVENT_SOURCE_CONNECTION_ID`
 
    1. 建立目標連線。
 
@@ -472,7 +472,7 @@ ht-degree: 37%
       }'
       ```
 
-      從回應取得目標連線ID並使用它來取代 `EVENT_TARGET_CONNECTION_ID`
+      從回應中取得目標連線 ID 並使用它取代 `EVENT_TARGET_CONNECTION_ID`
 
    1. 建立資料流。
 
@@ -499,7 +499,7 @@ ht-degree: 37%
       }'
       ```
 
-   1. 取得基礎連線。 結果將包含傳送設定檔資料所需的inletUrl。
+   1. 取得基本連線。結果將包含傳送設定檔資料所需的 inletUrl。
 
    ```bash
    curl --location "https://platform.adobe.io/data/foundation/flowservice/connections/$EVENT_BASE_CONNECTION_ID" \
@@ -510,14 +510,14 @@ ht-degree: 37%
        --header "Content-Type: application/json" 
    ```
 
-   從回應中取得inletUrl，並使用它來取代 `EVENT_INLET_URL`
+   從回應中取得 inletUrl 並使用它取代 `EVENT_INLET_URL`
 
-1. 在此步驟中，使用者必須擁有值 `EVENT_DATASET_ID` 和 `EVENT_INLET_URL`；如果沒有，請參考步驟 `3` 或 `4` （分別）。
-1. 若要內嵌事件，使用者需要變更時間變數 `TIMESTAMP` cURL的請求內文中。
+1. 在此步驟中，使用者必須具有 `EVENT_DATASET_ID` 和 `EVENT_INLET_URL` 的值；如果沒有，請分別參閱步驟 `3` 或 `4`。
+1. 若要擷取事件，使用者需要變更以下 cURL 要求內文中的時間變數 `TIMESTAMP`。
 
-   1. 取代 `body.xdmEntity` 包含下載事件json的內容。
-   1. `TIMESTAMP` 如果是事件發生時間，請使用UTC時區的時間戳記，例如 `2023-09-05T23:57:00.071+00:00`.
-   1. 設定變數的唯一值 `UNIQUE_EVENT_ID`.
+   1. 將 `body.xdmEntity` 取代成下載的事件 json 的內容。
+   1. `TIMESTAMP` 將是事件發生的時間，使用 UTC 時區的時間戳記，例如 `2023-09-05T23:57:00.071+00:00`。
+   1. 為變數 `UNIQUE_EVENT_ID` 設定唯一值。
 
    ```bash
    curl --location "$EVENT_INLET_URL?synchronousValidation=true" \
