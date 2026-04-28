@@ -34,7 +34,7 @@ ht-degree: 98%
 >[!TIP]
 >
 >如果您使用終端機執行 curl，則可以在執行 curl 之前設定變數值，這樣就無需在各個 curl 中替換這些值。
->例如：如果您設定 `ORG_ID=************@AdobeOrg`，shell 會自動將每次出現的 `$ORG_ID` 替換成該值，這樣您就可以複製、貼上和執行以下 curl 而不用做任何修改。
+>例如：如果您設定 `ORG_ID=**&#x200B;**&#x200B;**&#x200B;**&#x200B;**&#x200B;**@AdobeOrg`，shell 會自動將每次出現的 `$ORG_ID` 替換成該值，這樣您就可以複製、貼上和執行以下 curl 而不用做任何修改。
 >
 > 本文件中使用了以下變數
 >
@@ -647,7 +647,7 @@ ht-degree: 98%
 
 或者，你可以查看 `Journey Report`；若要查看，請按一下`Journey Object` (在`Bill of Materials page`)，這樣會將您重新導向至`Journey Details page`。
 
-任何已發佈的歷程使用者必須取得&#x200B;**[!UICONTROL 檢視報告]**按鈕
+任何已發佈的歷程使用者必須取得&#x200B;**[!UICONTROL 檢視報告]**&#x200B;按鈕
 ![歷程報告頁面](../assets/journey-report-page.png)
 
 
