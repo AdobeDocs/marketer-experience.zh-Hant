@@ -4,8 +4,8 @@ description: 這是模擬「[!UICONTROL 單一事件]」類型歷程驗證的指
 exl-id: 314f967c-e10f-4832-bdba-901424dc2eeb
 source-git-commit: 194667c26ed002be166ab91cc778594dc1f09238
 workflow-type: tm+mt
-source-wordcount: '839'
-ht-degree: 100%
+source-wordcount: '849'
+ht-degree: 98%
 
 ---
 
@@ -90,7 +90,7 @@ ht-degree: 100%
 
 ## 擷取 IMS 權杖
 
-1. 請依照[驗證和存取 Experience Platform API](https://experienceleague.adobe.com/docs/experience-platform/landing/platform-apis/api-authentication.html?lang=zh-Hant) 文件來產生存取權杖。
+1. 請依照[驗證和存取 Experience Platform API](https://experienceleague.adobe.com/docs/experience-platform/landing/platform-apis/api-authentication.html) 文件來產生存取權杖。
 
 ## 發佈教戰手冊建立的歷程
 
@@ -102,7 +102,7 @@ ht-degree: 100%
 
 1. **使用 cURL**
 
-   1. 發佈歷程。回應將包含在下一步驟中擷取歷程發佈狀態所需的作業 ID。
+   1. 發佈歷程。 回應將包含在下一步驟中擷取歷程發佈狀態所需的作業 ID。
 
       ```bash
       curl --location --request POST "https://journey-private.adobe.io/authoring/jobs/journeyVersions/$JOURNEY_ID/deploy" \
@@ -129,9 +129,9 @@ ht-degree: 100%
 
 >[!TIP]
 >
->如果您的電子郵件提供者支援 Plus 電子郵件，您可以將 `+<variable>` 附加到電子郵件，藉此重複使用相同的電子郵件地址，例如 `usertest@email.com` 可以作為 `usertest+v1@email.com` 或 `usertest+24jul@email.com` 重複使用。這樣可在每次有新的設定檔時，仍然使用相同的電子郵件 ID。
+>如果您的電子郵件提供者支援 Plus 電子郵件，您可以將 `+<variable>` 附加到電子郵件，藉此重複使用相同的電子郵件地址，例如 `usertest@email.com` 可以作為 `usertest+v1@email.com` 或 `usertest+24jul@email.com` 重複使用。 這樣可在每次有新的設定檔時，仍然使用相同的電子郵件 ID。
 >
->備註：Plus 電子郵件是一項可設定功能，需要電子郵件提供者支援。在測試中使用這些地址之前，請檢查您是否可以收到這些地址的電子郵件。
+>備註：Plus 電子郵件是一項可設定功能，需要電子郵件提供者支援。 在測試中使用這些地址之前，請檢查您是否可以收到這些地址的電子郵件。
 
 1. 首次使用的使用者需要建立 **[!DNL customer dataset]** 和 **[!DNL HTTP Streaming Inlet Connection]**。
 1. 如果您已經建立 **[!DNL customer dataset]** 和 **[!DNL HTTP Streaming Inlet Connection]**，請跳至步驟 `5`。
@@ -275,7 +275,7 @@ ht-degree: 100%
       }'
       ```
 
-   1. 取得基本連線。結果將包含傳送設定檔資料所需的 inletUrl。
+   1. 取得基本連線。 結果將包含傳送設定檔資料所需的 inletUrl。
 
       ```bash
       curl --location "https://platform.adobe.io/data/foundation/flowservice/connections/$PROFILE_BASE_CONNECTION_ID" \
@@ -296,7 +296,7 @@ ht-degree: 100%
    1. `CUSTOMER_LAST_NAME` 將是使用者的姓氏
    1. `EMAIL` 將是使用者的電子郵件地址，這對於使用不同的電子郵件 ID 至關重要，以便可以擷取新的設定檔。
 
-1. 最後執行 curl 以擷取客戶設定檔。視您想要驗證的管道而定，將 `body.xdmEntity.consents.marketing.preferred` 更新為 `email`、`sms` 或 `push`。同時也將對應的 `val` 設定為 `y`。
+1. 最後執行 curl 以擷取客戶設定檔。 視您想要驗證的管道而定，將 `body.xdmEntity.consents.marketing.preferred` 更新為 `email`、`sms` 或 `push`。 同時也將對應的 `val` 設定為 `y`。
 
    ```bash
    curl --location "$PROFILE_INLET_URL?synchronousValidation=true" \
@@ -499,7 +499,7 @@ ht-degree: 100%
       }'
       ```
 
-   1. 取得基本連線。結果將包含傳送設定檔資料所需的 inletUrl。
+   1. 取得基本連線。 結果將包含傳送設定檔資料所需的 inletUrl。
 
    ```bash
    curl --location "https://platform.adobe.io/data/foundation/flowservice/connections/$EVENT_BASE_CONNECTION_ID" \
@@ -611,12 +611,12 @@ ht-degree: 100%
                "timestamp": "'$TIMESTAMP'",
                "web": {
                    "webInteraction": {
-                       "URL": "https://experienceleague.adobe.com/docs/experience-platform/edge/data-collection/collect-commerce-data.html?lang=zh-Hant",
+                       "URL": "https://experienceleague.adobe.com/docs/experience-platform/edge/data-collection/collect-commerce-data.html?lang=en",
                        "name": "Sample value",
                        "region": "Sample value"
                    },
                    "webPageDetails": {
-                       "URL": "https://experienceleague.adobe.com/docs/experience-platform/edge/data-collection/collect-commerce-data.html?lang=zh-Hant",
+                       "URL": "https://experienceleague.adobe.com/docs/experience-platform/edge/data-collection/collect-commerce-data.html?lang=en",
                        "isErrorPage": false,
                        "isHomePage": false,
                        "name": "Sample value",
@@ -647,7 +647,7 @@ ht-degree: 100%
 
 或者，你可以查看 `Journey Report`；若要查看，請按一下`Journey Object` (在`Bill of Materials page`)，這樣會將您重新導向至`Journey Details page`。
 
-若是任何已發佈的歷程，使用者必須取得「**[!UICONTROL 查看報告]**」按鈕
+任何已發佈的歷程使用者必須取得&#x200B;**[!UICONTROL 檢視報告]**按鈕
 ![歷程報告頁面](../assets/journey-report-page.png)
 
 
